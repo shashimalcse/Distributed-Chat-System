@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option java_package = "com.leader_election.pb";
+// package com.leader_election;
+// import "type.proto";
+
+service coordinator{
+  rpc leaderElect(elect) returns (ok);
+  rpc setCoordinator(coordinatorMsg) returns (coordinatorMsgAck);
+}
+
+// message type {
+//   enum value {
+//     UNKNOWN = 0;
+//     ELECT = 1;
+//     OK = 2;
+//     QUERY = 3;
+//     ANSWER = 4;
+//     COORDINATOR = 5;
+//   }
+// }
+
+
+message elect{
+  string type = 1;
+  int32 serverId = 2;
+}
+
+message ok{
+  string type = 1;
+  int32 serverId = 2;
+}
+
+message coordinatorMsg{
+  string type = 1;
+  int32 serverId = 2;
+  int32 coordinator = 3;
+}
+
+message coordinatorMsgAck{
+  string type = 1;
+}

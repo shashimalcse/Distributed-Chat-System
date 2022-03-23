@@ -1,0 +1,156 @@
+syntax = "proto3";
+
+option java_package =  "com.heartbeat.pb";
+
+service heartbeat{
+  rpc isLive(HeartBeatRequest) returns (HeartBeatResponse);
+
+  rpc sendNewIdentify(ServerClient) returns (ServerClient){};
+
+
+
+  rpc clientExist(clientExistRequest) returns (clientExistResponse);
+
+  rpc addNewClient(clientExistResponse) returns(acknowledge);
+
+
+  rpc roomExist(roomExistRequest) returns (roomExistResponse);
+
+  rpc addNewRoom(roomExistResponse) returns (acknowledge);
+
+
+  rpc deleteRoom(deleteRoomRequest) returns (deleteRoomResponse);
+
+  rpc deleteRequestedRoom(deleteRoomResponse) returns (acknowledge);
+
+  rpc joinRoom(joinRoomRequest) returns (joinRoomResponse);
+
+  
+
+  rpc moveJoin (moveJoinRequest) returns (acknowledge);
+
+  rpc serverConnected(serverConnectionRequest) returns (serverConnectionResponse);
+
+  rpc serverDown(serverDownDetail) returns(acknowledge);
+
+  rpc clientQuit(clientQuitRequest) returns(acknowledge);
+
+}
+
+message ServerClient{
+  string type = 1;
+  string identity = 2;
+  string serverid = 3;
+}
+
+message HeartBeatRequest{string isLive = 1;}
+message HeartBeatResponse{string isLive = 1;}
+
+message joinRoomRequest{
+  string type = 1;
+  string identity = 2;
+  string former = 3;
+  string roomid = 4;
+}
+
+
+message moveJoinRequest{
+  string former=1;
+  string roomid = 2;
+  string identity = 3;
+  string newServer=5;
+}
+message moveJoinResponse{
+  string type = 1;
+  string roomid = 2;
+  string identity = 3;
+  string port = 4;
+  string approved = 5;
+}
+
+message joinRoomResponse{
+  string type = 1;
+  string identity = 2;
+  string former = 3;
+  string roomid = 4;
+  string serverid = 5;
+  string approved = 6;
+}
+
+message deleteRoomRequest{
+  string type = 1;
+  string roomid = 2;
+  string serverid = 3;
+}
+
+
+
+message deleteRoomResponse{
+  string type = 1;
+  string roomid = 2;
+  string serverid = 3;
+  string approved = 4;
+}
+
+
+message roomExistRequest{
+  string type=1;
+  string roomid=2;
+  string identity=3;
+  string serverid=4;
+}
+
+message roomExistResponse{
+  string type=1;
+  string roomid=2;
+  string identity=3;
+  string serverid=4;
+  string approved=5;
+}
+
+message clientExistRequest{
+  string typ=1;
+  string identity=2;
+  string serverid=3;
+}
+
+message clientExistResponse{
+  string typ=1;
+  string identity=2;
+  string serverid=3;
+  string approved=4;
+}
+
+message acknowledge{
+  string ack=1;
+}
+
+message serverConnectionRequest{
+  string serverid=1;
+  int32 port=2;
+  string address=3;
+  int32 clientPort=4;
+}
+
+message serverConnectionResponse{
+  string ack=1;
+  repeated string serverids=2;
+  repeated int32 co_ports=3;
+  repeated int32 client_ports=4;
+  repeated string address=5;
+  repeated string roomid=6;
+  repeated string server=7;
+  string leader=8;
+  string leaderAddress=9;
+  int32 leaderPort=10;
+}
+
+message serverDownDetail{
+  string serverid=1;
+}
+
+message clientQuitRequest{
+  string id=1;
+}
+
+

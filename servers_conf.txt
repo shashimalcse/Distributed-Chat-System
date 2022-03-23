@@ -1,0 +1,4 @@
+serverid	server_address	clients_port	coordination_port
+s1	164.92.154.82	4444	5555
+s2	164.92.158.106	4445	5556
+s3	164.92.155.83	4446	5557
