@@ -67,9 +67,9 @@ public final class App {
             sc.close();
             Runnable server = new Server(chatroom,serverid,server_address,clients_port,coordination_port,server_ids,server_addresses,clients_ports,coordination_ports, servers_conf);
             new Thread(server).start();
-            System.out.println(server_id);
-            System.out.println(clients_port);
-            System.out.println(coordination_port);
+            // System.out.println(server_id);
+            // System.out.println(clients_port);
+            // System.out.println(coordination_port);
             // ClientgRPC clientgrpc = new ClientgRPC("localhost"+coordination_port);
             // clientgrpc.getStatus();
 

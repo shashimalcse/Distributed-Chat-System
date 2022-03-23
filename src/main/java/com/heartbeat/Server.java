@@ -313,14 +313,14 @@ public class Server implements Runnable {
     }
 
     public static void setLeader(String newLeader) {
-        System.out.println(newLeader + "  elected as new leader");
+        System.out.println(newLeader + " elected as new leader");
         leader = newLeader;
 
         if (newLeader.equals(serverid)) {
             leaderPort = coordination_port;
             leaderAddress = server_address;
         } else {
-            System.out.println("Index of new leader:" + server_ids.indexOf(newLeader));
+            // System.out.println("Index of new leader:" + server_ids.indexOf(newLeader));
             leaderAddress = server_addresses.get(server_ids.indexOf(newLeader));
             leaderPort = coordination_ports.get(server_ids.indexOf(newLeader));
         }
@@ -371,9 +371,6 @@ public class Server implements Runnable {
                                         .isLive(request);
                                 if (response.getIsLive().equals("isLive")) {
                                     Server.servers_islive.set(Server.coordination_ports.indexOf(coo), "live");
-                                    System.out.println("Server "
-                                            + Server.server_ids.get(Server.coordination_ports.indexOf(coo))
-                                            + " is live");
                                 } else {
                                     if (Server.servers_islive.get(Server.coordination_ports.indexOf(coo))
                                             .equals("live")) {
@@ -473,15 +470,14 @@ public class Server implements Runnable {
         }
 
         public void leaderElect() {
-            System.out.println("Leader " + myServer.leader);
-            System.out.println("My server ID " + serverId);
-            System.out.println("LEADER ELECTION HANDLER");
-            System.out.println(coordination_ports.toString());
+            // System.out.println("Leader " + myServer.leader);
+            // System.out.println("My server ID " + serverId);
+            // System.out.println("LEADER ELECTION HANDLER");
+            // System.out.println(coordination_ports.toString());
             ArrayList<Integer> respondedServerIds = new ArrayList<Integer>();
             for (int coo : this.coordination_ports) {
                 // ELECT RPC
                 try {
-                    System.out.println("ports : " + coo);
                     ManagedChannel channel = ManagedChannelBuilder
                             .forAddress(Server.server_addresses.get(Server.coordination_ports.indexOf(coo)), coo)
                             .usePlaintext()
@@ -492,12 +488,12 @@ public class Server implements Runnable {
                     electBuilder.setServerId(Integer.parseInt(serverId.substring(1)));
                     elect electRequest = electBuilder.build();
                     ok response = stub.withDeadlineAfter(1000, TimeUnit.MILLISECONDS).leaderElect(electRequest);
-                    System.out.println("OK response");
+                    // System.out.println("OK response");
                     Integer respondedServerId = response.getServerId();
                     respondedServerIds.add(respondedServerId);
                     channel.shutdown();
                 } catch (Exception e) {
-                    System.out.println("No response");
+                    System.out.println("No response from server " + Server.server_ids.get(Server.coordination_ports.indexOf(coo)));
                 }
 
             }
@@ -1280,7 +1276,6 @@ public class Server implements Runnable {
     }
 
     public static synchronized void serverDown(String server_id) {
-        System.out.println("Server Down : " + serverid);
         if (serverid.equals(leader)) {
             coordination_ports.remove(server_ids.indexOf(server_id));
             // clients_ports.remove(server_ids.indexOf(server_id));
